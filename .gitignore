@@ -1,0 +1,7 @@
+venv
+.vscode
+data
+logs
+__pycache__
+pytest_cache
+.pytest.ini
