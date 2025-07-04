@@ -360,7 +360,7 @@ def plot_contour(plot_results: PlotResults, figure_of_merit: str,
     _, ax = plt.subplots(figsize=figsize_optimal)
     x: np.ndarray = best_df[x_axis_metric].values
     y: np.ndarray = best_df[y_axis_metric].values
-    logger.info(f"x unique: {np.unique(x)}, y unique: {np.unique(y)}")
+    logger.debug(f"x unique: {np.unique(x)}, y unique: {np.unique(y)}")
     # map string library names to their numeric index via bml_mapping
     z = best_df['Library'].apply(lambda lib: bml_mapping[lib]).values
     

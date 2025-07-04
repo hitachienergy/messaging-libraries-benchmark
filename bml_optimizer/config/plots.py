@@ -13,8 +13,8 @@ PLOT_SETTINGS = {
     'paper': {
         'dpi': 600,
         'figsize_bar': (lw, lw*0.8),
-        'figsize_scatter': (lw*2, lw),
-        'figsize_optimal': (lw, lw*0.8),
+        'figsize_scatter': (lw, lw*0.8),
+        'figsize_optimal': (lw, lw*0.5),
         'figsize_gp': [(lw, lw), (lw*2, lw*1.2)],
         'format': 'pdf',
         'output_dir': 'figures-paper'

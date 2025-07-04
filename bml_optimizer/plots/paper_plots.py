@@ -50,7 +50,7 @@ def produce_benchmark_plots(results_file: str, plots_to_produce: list[str] = ["o
     throughput_fom = ['Throughput', 'Payload Throughput']
     latency_fom = ['Min Latency', 'Avg Latency', 'Max Latency']
 
-    considered_payload = 100000 if 100000 in unique_payloads else 128000 # either normal or exponential
+    considered_payload = 100000 if 100000 in unique_payloads else 32000 # either normal or exponential
     considered_subscribers = unique_subscribers
 
     
@@ -195,6 +195,8 @@ if __name__ == "__main__":
     parser.add_argument('--use_log_scale', action='store_true', help='Enable log scale for x/y in scatter & optimality plots')
     args = parser.parse_args()
 
+    produce_optimization_plots = False
+
     results_file = args.file_benchmark
     try:
         produce_benchmark_plots(results_file=results_file, use_log_scale=args.use_log_scale)
@@ -203,14 +205,15 @@ if __name__ == "__main__":
     except IndexError as e:
         logger.warning(f"File {results_file} is empty, skipping")
 
-    results_folder = args.folder_workload
-    try:
-        produce_workload_plots(results_folder=results_folder)
-    except FileNotFoundError as e:
-        logger.warning(f"Folder {results_folder} not found, skipping")
+    if produce_optimization_plots:
+        results_folder = args.folder_workload
+        try:
+            produce_workload_plots(results_folder=results_folder)
+        except FileNotFoundError as e:
+            logger.warning(f"Folder {results_folder} not found, skipping")
 
-    try:
-        logger.info(f"Producing optimization plots from folder: {args.folder_optimize}")
-        produce_optimize_plots(args.folder_optimize)
-    except FileNotFoundError as e:
-        logger.warning(f"Folder {args.folder_optimize} not found, skipping")
+        try:
+            logger.info(f"Producing optimization plots from folder: {args.folder_optimize}")
+            produce_optimize_plots(args.folder_optimize)
+        except FileNotFoundError as e:
+            logger.warning(f"Folder {args.folder_optimize} not found, skipping")
