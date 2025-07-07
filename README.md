@@ -1,30 +1,6 @@
 # Introduction 
 This project benchmarks various messaging libraries to compare their performance in different communication scenarios. 
 
-In the following, we state our goals for the implementation.
-
-### Libraries
-- **ZeroMQ** [done]
-- **NanoMsg** [done]
-- **NNG** [done]
-
-### Transports
-- **In-process** communication (inproc) [done]
-- **Inter-process** communication (ipc) [done]
-- **Inter-device** communication (tcp) [done]
-
-### Features
-- **Buffering** [done]
-- **Polling** [done, not in NNG]
-- **Zero-copy** [done, but inefficient]
-
-### Metrics Collected
-- **Latency** [done]
-- **Throughput** [done]
-- **Messages lost** [done]
-- **CPU and memory usage** [done]
-
-
 # Required Libraries
 
 You can either use ```install_bml.sh``` or follow these instructions.
@@ -81,9 +57,7 @@ Examples:
   --sub_ids <id1> <id2> ...      Provide IDs for each subscriber if multiple subs are used
 ```
 
-# BML Optimizer
-
-TODO: add description and link to the suite
+# Benchmarking Suite (Paper)
 
 Required to run all the components of the suite, you need to install python packages via pip:
 
@@ -92,3 +66,46 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt 
 ```
+
+To reproduce the plots of the paper by plotting the numerics in `results/results.csv`, you can run:
+```
+ python3 -m bml_optimizer.plots.paper_plots --use_log_scale
+```
+
+To run your own full simulation (as the one described in the paper)
+```
+ chmod +x ./results/runner.sh
+ ./results/runner.sh
+```
+Mind that you will write/overwrite `results/results.csv`.
+
+To run a custom simulation, you can run:
+```
+python3 -m bml_optimizer.scripts.bruteforcer
+```
+
+with custom parameters:
+```
+usage: bruteforcer.py [-h] [--libraries LIBRARIES [LIBRARIES ...]] [--protocols PROTOCOLS [PROTOCOLS ...]] [--pub_intervals PUB_INTERVALS [PUB_INTERVALS ...]] [--pub_delays PUB_DELAYS [PUB_DELAYS ...]]
+                      [--subscribers SUBSCRIBERS [SUBSCRIBERS ...]] [--message_counts MESSAGE_COUNTS [MESSAGE_COUNTS ...]] [--payload_lengths PAYLOAD_LENGTHS [PAYLOAD_LENGTHS ...]] [--runs RUNS]
+
+Bruteforce the simulator
+
+options:
+  -h, --help            show this help message and exit
+  --libraries LIBRARIES [LIBRARIES ...]
+                        List of libraries to test [zeromq, nanomsg, nng]
+  --protocols PROTOCOLS [PROTOCOLS ...]
+                        List of protocols to test [inproc, ipc, tcp]
+  --pub_intervals PUB_INTERVALS [PUB_INTERVALS ...]
+                        List of publication intervals to test
+  --pub_delays PUB_DELAYS [PUB_DELAYS ...]
+                        List of publication delays to test
+  --subscribers SUBSCRIBERS [SUBSCRIBERS ...]
+                        List of subscribers to test
+  --message_counts MESSAGE_COUNTS [MESSAGE_COUNTS ...]
+                        List of message counts to test
+  --payload_lengths PAYLOAD_LENGTHS [PAYLOAD_LENGTHS ...]
+                        List of payload lengths to test
+  --runs RUNS           Number of runs for each test
+  ```
